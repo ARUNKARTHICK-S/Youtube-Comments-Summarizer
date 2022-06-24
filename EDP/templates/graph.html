@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<title>YouTube Comments Summarizer</title>
+<style type="text/css">
+		#head{
+			background-color:#85FFBD;
+background-image: linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%);
+
+			height:60px;
+		}
+#manage{
+position: relative;
+top:20px;
+left: 20px;
+color: black;
+
+}
+#butemp{
+	position:relative;
+	left: 1075px;
+	background-color: #2a045d;
+	border-radius: 10px;
+	color: white;
+}
+#form
+{
+
+display:none;
+
+}
+#form{
+	align-items: center;
+	margin-top: 40px;
+	position: relative;
+margin-left: 40px;
+}
+.common{
+	position: relative;
+	left: 20px;
+}
+.name
+{
+	position: relative;
+	left: 50px;
+}
+.email
+{
+	position: relative;
+	left: 80px;
+}
+.phone
+{
+	position: relative;
+	left: 100px;
+}
+
+.comm_border{
+	border-radius: 8px;
+}
+.comm_border:hover{
+	background-color: lightblue;
+}
+#sub_butt
+{
+	position: relative;
+	left: 110px;
+	 font-size: 15px;
+	 text-align: center;
+	 background-color: green;
+}
+button{
+
+	margin-left: 5px;
+}
+
+ #formm{
+        margin: 20px 0;
+    }
+    #formm, input, button{
+        padding: 5px;
+    }
+    table{
+        width: 100%;
+        margin-bottom: 20px;
+		border-collapse: collapse;
+    }
+    table, th, td{
+        border: 5px solid #cdcdcd;
+    }
+    table th, table td{
+        padding: 10px;
+        text-align: center;
+    }
+body
+{
+	background-color: #FBAB7E;
+background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
+
+}
+</style>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+			{% for key, value in data.items() %}
+				{% if value is string %}
+					['{{ key }}', '{{ value }}'],
+				{% else %}
+					['{{ key }}', {{ value }}],
+				{% endif %}
+			{% endfor %}
+        ]);
+
+        var options = {
+          title: 'Subscribers and Viewers opinion about the video',
+          is3D: true,
+		  //pieHole: 0.5
+		  pieStartAngle: 100
+		  /*slices: {  
+			2: {offset: 0.2},
+            3: {offset: 0.3}
+          }*/
+		  /*slices: {
+            1: { color: 'transparent' }
+          }*/
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+      }
+    </script>
+</head>
+<body>
+<div>
+<form action="{{ url_for('home') }}" method="post">
+<table>
+        <thead>
+            <tr>
+                <th>Youtube Video Link</th>
+                <th>Positive</th>
+                <th>Negative</th>
+                 <th>Neutral</th>
+            </tr>
+        </thead>
+        <tbody>
+    <tr>
+      <td>{{res1}}</td>
+      <td>{{res2}}</td>
+      <td>{{res3}}</td>
+      <td>{{res4}}</td>
+    </tr>
+</tbody>
+    </table>
+</form>
+</div>
+<div style="margin: 10px 0 0 10px;width: 1000px">
+		<h3>The Summary of the video</h3>
+		<div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+	</div>
+</body>
+</html>
